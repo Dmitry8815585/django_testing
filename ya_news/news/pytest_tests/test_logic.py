@@ -54,7 +54,7 @@ def test_user_can_delete_his_comment(author_client, comment, news):
 
 def test_user_cant_delete_not_his_comment(
         form_data, reader_client, news, comment
-     ):
+):
     url = reverse('news:delete', kwargs={'pk': news.pk})
     response = reader_client.post(url)
 
@@ -64,7 +64,7 @@ def test_user_cant_delete_not_his_comment(
 
 def test_user_cant_edit_not_his_comment(
         form_data, reader_client, news, comment
-     ):
+):
     url = reverse('news:delete', kwargs={'pk': news.pk})
     response = reader_client.post(url, form_data)
     assert response.status_code == HTTPStatus.NOT_FOUND

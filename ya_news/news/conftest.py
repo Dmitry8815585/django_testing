@@ -65,7 +65,7 @@ def news_sorted_by_date(author):
             title=f'Новость {index}',
             text='Просто текст.',
             date=today - timedelta(days=index)
-            )
+        )
         for index in range(settings.NEWS_COUNT_ON_HOME_PAGE + 1)
     ]
     News.objects.bulk_create(news_list)
@@ -81,7 +81,7 @@ def comment_sorted_by_date(author, news):
             author_id=author.id,
             news_id=news.id,
             created=today - timedelta(days=index)
-            )
+        )
         for index in range(3)
     ]
     Comment.objects.bulk_create(comment_sorted_by_date)

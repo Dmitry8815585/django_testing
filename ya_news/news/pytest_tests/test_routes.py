@@ -17,7 +17,7 @@ def test_pages_availability_for_anonymous_user(client, name):
 
 
 def test_news_page_avail_for_anonymous_user(client, news):
-    url = reverse('news:detail',  kwargs={'pk': news.pk})
+    url = reverse('news:detail', kwargs={'pk': news.pk})
     response = client.get(url)
     assert response.status_code == HTTPStatus.OK
 
