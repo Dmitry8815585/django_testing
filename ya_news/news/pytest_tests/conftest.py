@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 
-import pytest
 from django.conf import settings
+from django.urls import reverse
+
+import pytest
 from news.models import Comment, News
 
 
@@ -94,3 +96,8 @@ def form_data(author, news):
         'author_id': author.id,
         'news_id': news.id
     }
+
+
+@pytest.fixture
+def news_url(news):
+    return reverse('news:detail', kwargs={'pk': news.pk})

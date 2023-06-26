@@ -1,5 +1,6 @@
-import pytest
 from django.urls import reverse
+
+import pytest
 from pytest_lazyfixture import lazy_fixture
 
 

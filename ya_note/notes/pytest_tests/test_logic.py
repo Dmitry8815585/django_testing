@@ -1,7 +1,8 @@
 from http import HTTPStatus
 
-import pytest
 from django.urls import reverse
+
+import pytest
 from notes.forms import WARNING
 from notes.models import Note
 from pytest_django.asserts import assertFormError, assertRedirects

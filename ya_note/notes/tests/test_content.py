@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+
 from notes.models import Note
 
 User = get_user_model()
@@ -31,6 +32,7 @@ class TestContent(TestCase):
             ('notes:edit', [self.note.slug]),
         )
         self.client.force_login(self.author)
+        self.url_list = reverse('notes:list')
 
     def test_anonymous_client_has_no_form(self):
         for name, args in self.urls:
@@ -40,14 +42,12 @@ class TestContent(TestCase):
                 self.assertIn('form', response.context)
 
     def test_note_in_object_list(self):
-        url = reverse('notes:list')
-        response = self.client.get(url)
+        response = self.client.get(self.url_list)
         object_list = response.context['object_list']
         self.assertIn(self.note, object_list)
 
     def test_list_notes_for_not_user_note(self):
-        url = reverse('notes:list')
-        response = self.client.get(url)
+        response = self.client.get(self.url_list)
         object_list = response.context['object_list']
         for note in object_list:
             self.assertNotEqual(note, self.note_reader)
