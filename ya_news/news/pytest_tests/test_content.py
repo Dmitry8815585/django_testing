@@ -1,21 +1,26 @@
 import pytest
 from django.conf import settings
 from django.urls import reverse
+from news.forms import CommentForm
 
 
-@pytest.mark.parametrize("client_type", ['client', 'author_client'])
+@pytest.mark.parametrize(
+    'parametrized_client, form_on_page,  expected_form_type',
+    (
+        (pytest.lazy_fixture('author_client'), True, CommentForm),
+        (pytest.lazy_fixture('client'), False, None),
+    )
+)
 def test_create_comment_page_contains_form(
-    client_type,
-    client, author_client,
-    news
+    news, parametrized_client, form_on_page, expected_form_type
 ):
     url = reverse('news:detail', kwargs={'pk': news.pk})
-    client = client if client_type == 'user' else author_client
-    response = client.get(url)
-    if client_type == 'user':
-        assert 'form' not in response.context
+    response = parametrized_client.get(url)
+    assert ('form' in response.context) is form_on_page
+    if expected_form_type:
+        assert isinstance(response.context['form'], expected_form_type)
     else:
-        assert 'form' in response.context
+        assert 'form' not in response.context
 
 
 def test_news_count(client, news_list):

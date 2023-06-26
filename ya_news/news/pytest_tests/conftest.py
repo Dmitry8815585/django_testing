@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 import pytest
 from django.conf import settings
-
 from news.models import Comment, News
 
 

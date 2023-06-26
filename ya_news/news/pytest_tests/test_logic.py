@@ -1,14 +1,15 @@
+import random
 from http import HTTPStatus
 
 from django.urls import reverse
-from pytest_django.asserts import assertFormError, assertRedirects
-
 from news.forms import BAD_WORDS, WARNING
 from news.models import Comment
+from pytest_django.asserts import assertFormError, assertRedirects
 
 
 def test_user_can_create_comment(author_client, author, form_data, news):
     url = reverse('news:detail', kwargs={'pk': news.pk})
+    assert Comment.objects.count() == 0
     response = author_client.post(url, data=form_data)
     reverse_url = f'{url}#comments'
     assertRedirects(response, reverse_url)
@@ -77,7 +78,9 @@ def test_user_cant_edit_not_his_comment(
 
 
 def test_user_cant_use_bad_words(author_client, form_data, news, comment):
-    bad_words_data = {'text': f'Какой-то текст, {BAD_WORDS[0]}, еще текст'}
+    bad_words_data = {
+        'text': f'Какой-то текст, {random.choice(BAD_WORDS)}, еще текст'
+    }
     url = reverse('news:detail', kwargs={'pk': news.pk})
     response = author_client.post(url, data=bad_words_data)
     assertFormError(
